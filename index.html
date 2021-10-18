@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>JNC EDUKASI</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="modal.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
+  
+  var script_url = "https://script.google.com/macros/s/AKfycbxAy4fgPq32-GQ0dgvvUhpzEK5PBno9gPMfzzLGZiU7X7d9bm_h69XPvlqAmkP1Qw-bjQ/exec";
+  
+  // Make an AJAX call to Google Script
+  function insert_value() {
+    
+    $("#re").css("visibility","hidden");
+     document.getElementById("loader").style.visibility = "visible";
+    $('#mySpinner').addClass('spinner');
+
+    var id1=    $("#id").val();
+    var name= $("#name").val();
+    var gender= $("#gender").val();
+    var email= $("#email").val();
+    var phone= $("#phone").val();
+    
+    
+    var url = script_url+"?callback=ctrlq&phone="+phone+"&email="+email+"&gender="+gender+"&name="+name+"&id="+id1+"&action=insert";
+  
+
+    var request = jQuery.ajax({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });
+  }
+
+  function update_value(){
+    $("#re").css("visibility","hidden");
+     document.getElementById("loader").style.visibility = "visible";  
+    
+var id1=    $("#id").val();
+    var name= $("#name").val();
+     var gender= $("#gender").val();
+      var email= $("#email").val();
+       var phone= $("#phone").val();
+      
+    
+    var url = script_url+"?callback=ctrlq&phone="+phone+"&email="+email+"&gender="+gender+"&name="+name+"&id="+id1+"&action=update";
+  
+
+    var request = jQuery.ajax({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });   
+  }
+
+    
+  function delete_value(){
+    $("#re").css("visibility","hidden");
+     document.getElementById("loader").style.visibility = "visible";
+    $('#mySpinner').addClass('spinner');
+var id1=    $("#id").val();
+    var name= $("#name").val();
+     var gender= $("#gender").val();
+      var email= $("#email").val();
+       var phone= $("#phone").val();
+    
+    
+    var url = script_url+"?callback=ctrlq&phone="+phone+"&email="+email+"&gender="+gender+"&name="+name+"&id="+id1+"&action=delete";
+  
+
+    var request = jQuery.ajax({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });
+
+  }
+
+  
+  // print the returned data
+  function ctrlq(e) { 
+    
+    $("#re").html(e.result);
+    $("#re").css("visibility","visible");
+    read_value();    
+  }
+  
+   
+function read_value() {
+
+$("#re").css("visibility","hidden");
+   
+   document.getElementById("loader").style.visibility = "visible";
+ var url = script_url+"?action=read";
+
+$.getJSON(url, function (json) {
+
+    // Set the variables from the results array
+   
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+
+        var header = table.createTHead();
+        var row = header.insertRow(0);     
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+         var cell3 = row.insertCell(2);
+          var cell4 = row.insertCell(3);
+           var cell5 = row.insertCell(4);
+    
+        cell1.innerHTML = "<b>ID</b>";
+        cell2.innerHTML = "<b>Name</b>";
+         cell3.innerHTML = "<b>Gender</b>";
+          cell4.innerHTML = "<b>Email</b>";
+           cell5.innerHTML = "<b>Phone</b>";
+        
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < json.records.length; i++) {
+
+            tr = table.insertRow(-1);
+                var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = json.records[i].ID;
+                tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = json.records[i].NAME;
+                tabCell = tr.insertCell(-1);
+                vartabCell.innerHTML = json.records[i].GENDER;
+                tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = json.records[i].EMAIL;
+                tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = json.records[i].PHONE;
+            }
+      
+
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+        document.getElementById("loader").style.visibility = "hidden";
+        $("#re").css("visibility","visible");
+    });
+    }
+  </script>
+  
+
+</head>
+<body>
+<header>
+
+   <div class="container"><br>
+        <span>
+            <button id="btn" class="btn btn-primary" style="font-style: initial;font-weight: bold;float: left;color: white;">ADD DATA</button>
+       </span>
+  <div class="header"style="text-align: center;font-size: 18px;font-weight: bold;color: white;">DATA SISWA</div>
+  <div id="blur-bg"></div>
+  <div id="form-con">
+  <form name="google-sheet">
+      <div id="heading"style="font-size: 20px;color: blue;">
+      <div class="header"></div>
+      <p>INPUT DATA</p>
+      <span id="close-btn"style="font-size: 20px;color: red;">X</span>
+      </div>
+      <div id="form_alerts"></div>
+      <label for="id">ID</label>
+      <input type="text" id="id" name="id" placeholder="Your ID">
+
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your name">
+
+      <label for="gender" class="form-label">Gender</label>
+                        <select type="gender" id="gender" name="gender" class="form-control" placeholder="Choose gender" required>
+                        <option>--Gender--</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select><br>
+
+      <label for="email" class="form-label">Email</label>
+      <input type="email" id="email" name="email" class="form-control" placeholder="Input your email" required>
+
+      <label for="phone" class="form-label">Phone</label>
+      <input type="phone" id="phone" name="phone" class="form-control" placeholder="Input phone number" required>
+
+       <button class="btn btn-success" style="width: 100%;" type="submit" id="b1" value="Insert" style="font-size: 13px;"onClick="insert_value()"/>SUBMIT</button>
+       <br><br>
+      <div id="button"style="text-align: center;font-weight: bolder;color: white;">
+           
+            <a class ="btn btn-primary" id ="b3"onclick="update_value()" value="Update"style="font-size: 13px;">UPDATE</a>
+            <a class ="btn btn-warning" id ="b4"onclick="delete_value()" value="Delete"style="font-size: 13px;">DELETE</a>
+            <button class="btn btn-danger"  style="font-size: 13px; "type="reset">RESET</button>
+          </div>
+      </div>
+</form>
+<script type="text/javascript" src="effect.js"></script>
+<iframe src="https://docs.google.com/spreadsheets/d/1KFkl9n-RjB2Kxj10yRhT8Xolv_suM7sw-KMBEaEJ1Zk/edit#gid=0"></iframe>
+   <style>iframe{width: 100%;height: 500px;}</style>
+   <div class="footer"style="text-align: center;">
+    <br>
+<p>JNC EDUKASI 2021 | All Rights Reserved</p>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<div id="loader"></div>
+<p id="re"></p>
+</div>
+</body>
+</div>
+
+
+  <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxAy4fgPq32-GQ0dgvvUhpzEK5PBno9gPMfzzLGZiU7X7d9bm_h69XPvlqAmkP1Qw-bjQ/exec'
+      const form = document.forms['google-sheet']      
+      form.addEventListener('submit', e => {
+      e.preventDefault()
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .catch(response => $("#form_alerts").html("<div class='alert alert-success'>Data successfully saved!.</div>"))
+      form.reset();
+        })
+  </script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<html>

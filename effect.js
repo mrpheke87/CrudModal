@@ -1,0 +1,14 @@
+$(document).ready(function(){
+	$("#btn").click(1000,function(){
+		$("#form-con").animate({
+			"top":"13px"
+		},1000);
+		$("#blur-bg").fadeIn(1000);
+		$("#close-btn").click(function(){
+			$("#blur-bg").fadeOut(1000);
+			$("#form-con").animate({
+			"top":"-800px"
+		},1000);
+		});
+	});
+});
